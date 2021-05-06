@@ -14,7 +14,7 @@ var totalOne= document.querySelector(".totalOne");
 
 var callsTotal = 0;
 var smsTotal = 0;
-// var Total = "";
+
 
 //add an event listener for when the add button is pressed
 
@@ -24,7 +24,7 @@ var smsTotal = 0;
 // * display the latest total on the screen
 function totalTextBill(){
     // get the value entered in the billType textfield
-var BillTypeTextElm= document.querySelector(".billTypeText")
+var BillTypeTextElm = document.querySelector(".billTypeText")
     var billText = BillTypeTextElm.value.trim();
 
     // update the correct total
