@@ -20,10 +20,12 @@ var callCost = 0;
 var smsCost = 0;
 var warningLevel = 0;
 var criticalLevel = 0;
+
 // create a variables that will keep track of all three totals.
-var callTotal = 0
-var smsTotal = 0
-var totalCost = 0
+var totalCall = 0
+var totalSms = 0
+var costTotal = 0
+
 //add an event listener for when the 'Update settings' button is pressed
 updateSettings.addEventListener("click", () => {
     callCost = Number(callCostSetting.value)
@@ -41,24 +43,24 @@ function sittingBill() {
     var settingAddBtn = document.querySelector("input[name='billItemTypeWithSettings']:checked");
     if (settingAddBtn) {
         var billtype = settingAddBtn.value
-        if (totalCost <= criticalLevel) {
+        if (costTotal <= criticalLevel) {
 
             if (billtype === "call") {
-                callTotal += callCost
+                totalCall += callCost
             }
             else if (billtype === "sms") {
-                smsTotal += smsCost
+                totalSms += smsCost
 
             }
         }
 
 
 
-        console.log(callTotal)
-        callTotalSettings.innerHTML = callTotal.toFixed(2);
-        smsTotalSettings.innerHTML = smsTotal.toFixed(2);
-        totalCost = callTotal + smsTotal
-        totalSettings.innerHTML = totalCost.toFixed(2);
+        console.log(totalCall)
+        callTotalSettings.innerHTML = totalCall.toFixed(2);
+        smsTotalSettings.innerHTML = totalSms.toFixed(2);
+        costTotal = totalCall + totalSms
+        totalSettings.innerHTML = costTotal.toFixed(2);
         addClassName()
 
     }
@@ -70,16 +72,24 @@ function sittingBill() {
 function addClassName() {
     totalSettings.classList.remove("danger")
     totalSettings.classList.remove("warning")
+    if  (costTotal < 1) {
+        return
+    }
+    else{
+        if (costTotal >= criticalLevel) {
+            totalSettings.classList.add("danger")
+        }
+        else if (costTotal >= warningLevel) {
+            totalSettings.classList.add("warning")
+        }
+    }    
+   
+    
+    }
 
-    if (totalCost >= criticalLevel) {
-        totalSettings.classList.add("danger")
-    }
-    else if (totalCost >= warningLevel) {
-        totalSettings.classList.add("warning")
-    }
-}
 
 settingAddBtnElem.addEventListener('click', sittingBill);
+
 
 //add an event listener for when the add button is pressed
 
