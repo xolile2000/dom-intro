@@ -16,22 +16,24 @@ var criticalLevelSetting = document.querySelector(".criticalLevelSetting")
 //get a reference to the 'Update settings' button
 var updateSettings = document.querySelector(".updateSettings")
 // create a variables that will keep track of all the settings
-var callCost = 0;
-var smsCost = 0;
-var warningLevel = 0;
-var criticalLevel = 0;
+// var callCost = 0;
+// var smsCost = 0;
+// var warningLevel = 0;
+// var criticalLevel = 0;
 
 // create a variables that will keep track of all three totals.
-var totalCall = 0
-var totalSms = 0
-var costTotal = 0
+// var totalCall = 0
+// var totalSms = 0
+// var costTotal = 0
+
+var settingsInstance = BillWithSettings()
 
 //add an event listener for when the 'Update settings' button is pressed
 updateSettings.addEventListener("click", () => {
-    callCost = Number(callCostSetting.value)
-    smsCost = Number(smsCostSetting.value)
-    warningLevel = warningLevelSetting.value
-    criticalLevel = criticalLevelSetting.value
+    settingsInstance.setCallCost(Number(callCostSetting.value))
+    settingsInstance.setSmsCost(Number(smsCostSetting.value))
+    settingsInstance.setWarningLevel(warningLevelSetting.value)
+    settingsInstance.setCriticalLevel(criticalLevelSetting.value)
     addClassName()
 
 
@@ -43,24 +45,23 @@ function sittingBill() {
     var settingAddBtn = document.querySelector("input[name='billItemTypeWithSettings']:checked");
     if (settingAddBtn) {
         var billtype = settingAddBtn.value
-        if (costTotal <= criticalLevel) {
+        // if (costTotal <= criticalLevel) {
 
-            if (billtype === "call") {
-                totalCall += callCost
-            }
-            else if (billtype === "sms") {
-                totalSms += smsCost
+        if (billtype === "call") {
+            settingsInstance.makeCall()
 
-            }
         }
+        else if (billtype === "sms") {
+            settingsInstance.sendSms()
+        }
+        // }
 
 
 
-        console.log(totalCall)
-        callTotalSettings.innerHTML = totalCall.toFixed(2);
-        smsTotalSettings.innerHTML = totalSms.toFixed(2);
-        costTotal = totalCall + totalSms
-        totalSettings.innerHTML = costTotal.toFixed(2);
+        //  console.log(totalCall)
+        callTotalSettings.innerHTML = (settingsInstance.getTotalCallCost()).toFixed(2);
+        smsTotalSettings.innerHTML = (settingsInstance.getTotalSmsCost()).toFixed(2);
+        totalSettings.innerHTML = (settingsInstance.getTotalCost()).toFixed(2);
         addClassName()
 
     }
@@ -70,22 +71,12 @@ function sittingBill() {
 
 
 function addClassName() {
-    totalSettings.classList.remove("danger")
+    totalSettings.classList.remove("critical")
     totalSettings.classList.remove("warning")
-    if  (costTotal < 1) {
-        return
-    }
-    else{
-        if (costTotal >= criticalLevel) {
-            totalSettings.classList.add("danger")
-        }
-        else if (costTotal >= warningLevel) {
-            totalSettings.classList.add("warning")
-        }
-    }    
-   
-    
-    }
+
+    totalSettings.classList.add(settingsInstance.totalClassName())
+
+}
 
 
 settingAddBtnElem.addEventListener('click', sittingBill);

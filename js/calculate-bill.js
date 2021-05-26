@@ -5,38 +5,28 @@ const billTotalElement = document.querySelector(".billTotal");
 //get a reference to the billString
 const billStringField = document.querySelector(".billString");
 //create the function that will be called when the calculate button is pressed
-var roundedBillTotal
+const billTotalColor =document.querySelector(".total")
+// var roundedBillTotal
+
+let calculateBillInstance = calculateBill()
     function calculateBtnClicked(){
-        // get the string entered in the textArea
-        var billString = billStringField.value;
-        //split the string
-        var billItems = billString.split(",");
-        // a variable for the total phone bill.
-        var billTotal = 0;
+        
+        // var billString = billStringField.value;
+        
+        // var billItems = billString.split(",");
+        
+        // var billTotal = 0;
+        // calculateBillInstance = calculateBtnClicked()
         //loop over all the bill items
-        for (var i=0;i<billItems.length;i++){
-            var billItem = billItems[i].trim();
-            if (billItem === "call"){
-                billTotal += 2.75;
-            }
-            else if (billItem === "sms"){
-                billTotal += 0.75;
-            }
-        }
+        billTotalElement.classList.remove("warning")
+        billTotalElement.classList.remove("critical")
         
         //round to two decimals
-         roundedBillTotal = billTotal.toFixed(2);
-        billTotalElement.innerHTML = roundedBillTotal;
+         
+        billTotalElement.innerHTML = calculateBillInstance.totalPhoneBill(billStringField.value);
         // return roundedBillTotal
-        billTotalElement.classList.remove("warning")
-        billTotalElement.classList.remove("danger")
-        if(roundedBillTotal >= 30){
-            billTotalElement.classList.add("danger")
-        }
-      else if(roundedBillTotal >= 20){
-            billTotalElement.classList.add("warning")
-        }
- 
+        
+        billTotalElement.classList.add(calculateBillInstance.addColor(billStringField.value));
     }
  
 

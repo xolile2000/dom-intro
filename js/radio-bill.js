@@ -8,40 +8,38 @@ var callTotalTwo = document.querySelector(".callTotalTwo")
 var smsTotalTwo = document.querySelector(".smsTotalTwo")
 
 var totalTwo = document.querySelector(".totalTwo")
+var billItemType = "";
 //create a variable that will keep track of the total bill
-var trackTotalCall = 0
-var trackTotalSms = 0
-function radioBill(){
+var radiobillInstance = radioBill()
+function radioBillCalc(){
+
     var radioBillAddBtn = document.querySelector("input[name='billItemType']:checked");
     if (radioBillAddBtn){
-        var billItemType = radioBillAddBtn.value
-        // billItemType will be 'call' or 'sms'
-        if(billItemType=== "call"){
-            trackTotalCall += 2.75;
-        }
-        else if(billItemType==="sms"){
-            trackTotalSms += 0.75
-        }
+        
+         billItemType = radioBillAddBtn.value
+    //     // billItemType will be 'call' or 'sms'
+    //     if(billItemType=== "call"){
+    //         trackTotalCall += 2.75;
+    //     }
+    //     else if(billItemType==="sms"){
+    //         trackTotalSms += 0.75
+    //     }
     }
+    radiobillInstance.radiobillTotal(billItemType);
     
 
-    callTotalTwo.innerHTML = trackTotalCall.toFixed(2);
-    smsTotalTwo.innerHTML = trackTotalSms.toFixed(2);
-    var totalCost = trackTotalCall + trackTotalSms
+    callTotalTwo.innerHTML = (radiobillInstance.totalCallCost()).toFixed(2);
+    smsTotalTwo.innerHTML = (radiobillInstance.totalSmsCost()).toFixed(2);
+    var totalCost = (radiobillInstance.getTotalCost());
     totalTwo.innerHTML = totalCost.toFixed(2);
 
-    totalTwo.classList.remove("danger");
+    totalTwo.classList.remove("critical");
     totalTwo.classList.remove("warning");
-    
-    if(totalCost >= 30){
-        totalTwo.classList.add("danger")
-    }
-  else if(totalCost >= 20){
-    totalTwo.classList.add("warning")
-  } 
+    totalTwo.classList.add(radiobillInstance.totalClassName())
+ 
 
 }
-radioBillAddBtn.addEventListener('click', radioBill);
+radioBillAddBtn.addEventListener('click', radioBillCalc);
 // alert(radioBillAddBtn)
 //in the event listener get the value from the billItemTypeRadio radio buttons
 // * add the appropriate value to the running total
