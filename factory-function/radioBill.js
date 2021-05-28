@@ -8,7 +8,7 @@ function radioBill() {
 
     function radiobillTotal(radioBillAddBtn) {
         var billItemType = radioBillAddBtn;
-        // if (radioBillAddBtn){
+
         if (billItemType === "call") {
             makeCall()
         }
